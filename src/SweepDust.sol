@@ -20,11 +20,25 @@ contract SweepDust is Ownable, ReentrancyGuard {
         dex = UniV3Provider(_dex);
     }
 
+    /// @notice This function is responsible for swapping multiple tokens into a single token
+    /// @dev Explain to a developer any extra details
+    /// @param tokensList List of ERC20 tokenAddresses to swap
+    /// @param amount Amount of tokens to swap
+    /// @param requiredToken
     function sweepDust(
         address[] memory tokensList,
         uint256[] memory amount,
         address requiredToken
     ) external nonReentrant {
+        _swapForERC20(tokensList, amount, requiredToken);
+        emit sweep(tokensList, amount, requiredToken);
+    }
+
+    function _swapForERC20(
+        address[] memory tokensList,
+        uint256[] memory amount,
+        address requiredToken
+    ) internal {
         uint256 leng = tokensList.length;
         for (uint256 i; i < leng; ) {
             IERC20(tokensList[i]).safeTransferFrom(
@@ -37,6 +51,5 @@ contract SweepDust is Ownable, ReentrancyGuard {
                 ++i;
             }
         }
-        emit sweep(tokensList, amount, requiredToken);
     }
 }
