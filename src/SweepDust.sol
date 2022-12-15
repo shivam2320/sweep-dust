@@ -32,14 +32,13 @@ contract SweepDust is Ownable, ReentrancyGuard {
         address[] memory tokensList,
         uint256[] memory amount,
         address requiredToken
-    ) external nonReentrant {
+    ) external {
         require(requiredToken != address(0), "");
+
         uint256 amountOut = _swapForERC20(tokensList, amount, requiredToken);
-        IERC20(requiredToken).safeTransferFrom(
-            address(this),
-            msg.sender,
-            amountOut
-        );
+
+        IERC20(requiredToken).safeTransfer(msg.sender, amountOut);
+
         emit sweep(tokensList, amount, requiredToken);
     }
 
@@ -49,13 +48,16 @@ contract SweepDust is Ownable, ReentrancyGuard {
         address requiredToken
     ) internal returns (uint256 amountOut) {
         uint256 leng = tokensList.length;
+
         for (uint256 i; i < leng; ) {
             uint256 _amountOut = dex.swapERC20(
                 tokensList[i],
                 requiredToken,
                 amount[i],
+                msg.sender,
                 ""
             );
+
             amountOut += _amountOut;
             unchecked {
                 ++i;

@@ -24,6 +24,7 @@ interface IDex {
         address _tokenIn,
         address _tokenOut,
         uint256 amountIn,
+        address sender,
         bytes memory extraData
     ) external returns (uint256 amountOut);
 }

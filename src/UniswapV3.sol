@@ -19,8 +19,8 @@ contract UniV3Provider is IDex, Ownable, ReentrancyGuard {
 
     uint24 public constant poolFee = 3000;
 
-    // Uniswap router and wrapped native token address required
-    constructor(IUniswapRouter _swapRouter, address _wrappedNative) {
+    // Uniswap roOkayter and wrapped native token address required
+    constructor(address _swapRouter, address _wrappedNative) {
         swapRouter = IUniswapRouter(_swapRouter);
         wrappedNative = _wrappedNative;
     }
@@ -36,11 +36,12 @@ contract UniV3Provider is IDex, Ownable, ReentrancyGuard {
         address _tokenIn,
         address _tokenOut,
         uint256 amountIn,
+        address sender,
         bytes memory //extraData
     ) external returns (uint256 amountOut) {
         TransferHelper.safeTransferFrom(
             _tokenIn,
-            msg.sender,
+            sender,
             address(this),
             amountIn
         );
@@ -53,7 +54,7 @@ contract UniV3Provider is IDex, Ownable, ReentrancyGuard {
                 tokenOut: _tokenOut,
                 fee: poolFee,
                 recipient: msg.sender,
-                deadline: block.timestamp + 120,
+                deadline: block.timestamp + 15,
                 amountIn: amountIn,
                 amountOutMinimum: 0,
                 sqrtPriceLimitX96: 0
