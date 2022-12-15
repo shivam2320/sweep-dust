@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.9;
+pragma solidity ^0.8.7;
 
 import "@uniswap/v3-periphery/contracts/libraries/TransferHelper.sol";
 import "@uniswap/v3-periphery/contracts/interfaces/ISwapRouter.sol";
@@ -17,9 +17,9 @@ contract UniV3Provider is IDex, Ownable, ReentrancyGuard {
     IUniswapRouter public swapRouter;
     address private wrappedNative;
 
-    uint24 public constant poolFee = 3000;
+    uint24 public constant POOL_FEE = 3000;
 
-    // Uniswap roOkayter and wrapped native token address required
+    // Uniswap Router and wrapped native token address required
     constructor(address _swapRouter, address _wrappedNative) {
         swapRouter = IUniswapRouter(_swapRouter);
         wrappedNative = _wrappedNative;
@@ -36,8 +36,7 @@ contract UniV3Provider is IDex, Ownable, ReentrancyGuard {
         address _tokenIn,
         address _tokenOut,
         uint256 amountIn,
-        address sender,
-        bytes memory //extraData
+        address sender
     ) external returns (uint256 amountOut) {
         TransferHelper.safeTransferFrom(
             _tokenIn,
@@ -52,7 +51,7 @@ contract UniV3Provider is IDex, Ownable, ReentrancyGuard {
             .ExactInputSingleParams({
                 tokenIn: _tokenIn,
                 tokenOut: _tokenOut,
-                fee: poolFee,
+                fee: POOL_FEE,
                 recipient: msg.sender,
                 deadline: block.timestamp + 15,
                 amountIn: amountIn,
@@ -70,16 +69,17 @@ contract UniV3Provider is IDex, Ownable, ReentrancyGuard {
     // @param _tokenOut address of output token
     // param extraData extra data if required
      */
-    function swapNative(
-        address _tokenOut,
-        bytes memory //extraData
-    ) external payable returns (uint256 amountOut) {
+    function swapNative(address _tokenOut)
+        external
+        payable
+        returns (uint256 amountOut)
+    {
         require(msg.value > 0, "Must pass non 0 ETH amount");
 
         uint256 deadline = block.timestamp + 120;
         address tokenIn = wrappedNative;
         address tokenOut = _tokenOut;
-        uint24 fee = 3000;
+        uint24 fee = POOL_FEE;
         address recipient = msg.sender;
         uint256 amountIn = msg.value;
         uint256 amountOutMinimum = 1;

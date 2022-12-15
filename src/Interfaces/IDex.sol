@@ -1,5 +1,5 @@
 //SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.9;
+pragma solidity ^0.8.7;
 
 interface IDex {
     event NativeFundsSwapped(
@@ -15,7 +15,7 @@ interface IDex {
         uint256 amountOut
     );
 
-    function swapNative(address _tokenOut, bytes memory extraData)
+    function swapNative(address _tokenOut)
         external
         payable
         returns (uint256 amountOut);
@@ -24,7 +24,6 @@ interface IDex {
         address _tokenIn,
         address _tokenOut,
         uint256 amountIn,
-        address sender,
-        bytes memory extraData
+        address sender
     ) external returns (uint256 amountOut);
 }

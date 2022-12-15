@@ -51,8 +51,7 @@ contract SweepDustTest is Test {
             address(chz),
             address(usdt),
             2449782196816200,
-            prankAddress,
-            ""
+            prankAddress
         );
         emit log_named_uint("USDT bal after", chz.balanceOf(prankAddress));
     }
@@ -69,7 +68,8 @@ contract SweepDustTest is Test {
         sweeper.sweepDust(
             tokens,
             amounts,
-            0xdAC17F958D2ee523a2206206994597C13D831ec7
+            0xdAC17F958D2ee523a2206206994597C13D831ec7,
+            prankAddress
         );
         emit log_named_uint("chz bal after", chz.balanceOf(prankAddress));
         emit log_named_uint("aave bal after", aave.balanceOf(prankAddress));
