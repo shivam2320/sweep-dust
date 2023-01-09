@@ -18,7 +18,7 @@ contract SweepDustTest is Test {
     UniV3Provider uniswap;
     USDT usdt = USDT(0xdAC17F958D2ee523a2206206994597C13D831ec7);
     USDT chz = USDT(0x3506424F91fD33084466F402d5D97f05F8e3b4AF);
-    USDT aave = USDT(0x7Fc66500c84A76Ad7e9c93437bFc5Ac33E2DDaE9);
+    USDT aave = USDT(0x42bBFa2e77757C645eeaAd1655E0911a7553Efbc);
     USDT link = USDT(0x514910771AF9Ca656af840dff83E8264EcF986CA);
 
     address[] tokens = [
@@ -29,8 +29,8 @@ contract SweepDustTest is Test {
 
     uint256[] amounts = [
         uint256(900000000000000000000000000),
-        uint256(676728891474511811440000),
-        uint256(43000000000000000000000000)
+        uint256(5750000000000000000000000),
+        uint256(40000000000000000000000000)
     ];
 
     function setUp() public {
@@ -63,7 +63,7 @@ contract SweepDustTest is Test {
         emit log_named_uint("aave bal before", aave.balanceOf(prankAddress));
         emit log_named_uint("link bal before", link.balanceOf(prankAddress));
         chz.approve(address(uniswap), 900000000000000000000000000);
-        aave.approve(address(uniswap), 676728891474511811440000);
+        aave.approve(address(uniswap), 5750000000000000000000000);
         link.approve(address(uniswap), 43000000000000000000000000);
         sweeper.sweepDust(
             tokens,

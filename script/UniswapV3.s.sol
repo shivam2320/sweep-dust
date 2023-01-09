@@ -4,7 +4,7 @@ pragma solidity ^0.8.13;
 import "forge-std/Script.sol";
 import "src/UniswapV3.sol";
 
-contract CounterScript is Script {
+contract UniV3ProviderScript is Script {
     function setUp() public {}
 
     function run() public {
